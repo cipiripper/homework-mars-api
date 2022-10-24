@@ -2,6 +2,7 @@ import Express from "express";
 import http from "http";
 import { AddressInfo } from "net";
 import * as Routers from "./routers";
+import CacheService from "./services/cache-service";
 
 export default class ApiServer {
     private port: number;
@@ -16,12 +17,17 @@ export default class ApiServer {
         this.server = null;
     }
 
-    private async initRouters() {
+    private async initServices() {
+        await CacheService.connect();
+    }
+
+    private initRouters() {
         this.app.use(`${this.mountPoint}`, Routers.images);
     }
 
     public async start(): Promise<number> {
-        await this.initRouters();
+        await this.initServices();
+        this.initRouters();
 
         return new Promise((resolve, reject) => {
             this.server = this.app.listen(this.port, () => {

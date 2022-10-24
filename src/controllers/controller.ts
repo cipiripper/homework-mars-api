@@ -1,5 +1,6 @@
 import BadRequest from "../models/errors/bad-request";
 import HttpError from "../models/errors/http-error";
+import InternalServerError from "../models/errors/internal-server-error";
 
 export default abstract class Controller {
     static handleError(error: Error) {
@@ -8,7 +9,7 @@ export default abstract class Controller {
         if (error instanceof HttpError) {
             return error;
         } else {
-            return new HttpError(500, error.message);
+            return new InternalServerError(error.message);
         }
     }
 

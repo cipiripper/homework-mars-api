@@ -16,7 +16,9 @@ describe("Images API", () => {
             .expect('Content-Type', /json/)
             .expect(200);
 
-        expect(res.body).toMatchObject({ 'url': 'aaaaaaaa' });
+        expect(res.body).toHaveProperty("photos");
+        expect(res.body).toHaveProperty("camera");
+        expect(res.body).toHaveProperty("rover");
     });
 
     it('Should return list of rovers for bad rover name', async () => {

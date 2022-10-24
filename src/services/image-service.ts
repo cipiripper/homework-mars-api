@@ -1,20 +1,24 @@
 import Image from "../models/image";
-import ImagesGetResponse from "../models/responses/images-get-response";
 import CacheService from "./cache-service";
-import NasaAPIService from "./nasa-api-service";
+import NasaAPIService, { MarsRoverPhoto } from "./nasa-api-service";
 
 class ImageService {
-    public async getImages(rover: string, camera: string, sol: number): Promise<ImagesGetResponse> {
+    public async getImages(rover: string, camera: string, sol: number, includeMetadata?: boolean): Promise<ImagesGetResponse> {
         const cacheKey = `${rover}-${camera}-${sol}`;
-        const isCached = await CacheService.isCached(cacheKey);
-        if (isCached) {
-            const object = await CacheService.getObject(cacheKey);
-            return object as ImagesGetResponse;
+        const cachedObject = (await CacheService.getObject(cacheKey)) as ImagesGetResponse;
+
+        if (cachedObject) {
+            if (includeMetadata) {
+                cachedObject.metadata = {
+                    fromCache: true
+                };
+            }
+            return cachedObject as ImagesGetResponse;
         } else {
-            const data = await NasaAPIService.getMarsRoverPhotos(rover, camera, sol);
-            const response = data.photos.reduce((res: ImagesGetResponse, image: any) => {
+            const images = await NasaAPIService.getMarsRoverPhotos(rover, camera, sol);
+            const response = images.reduce((res: ImagesGetResponse, image: MarsRoverPhoto) => {
                 res.rover = image.rover.name;
-                res.camera = image.camera.name;
+                res.camera = image.camera.full_name;
                 res.photos.push({
                     url: image.img_src,
                     date: image.earth_date,
@@ -25,9 +29,29 @@ class ImageService {
                 return res;
             }, new ImagesGetResponse());
 
-            await CacheService.set(cacheKey, response);
+            await CacheService.setObject(cacheKey, response);
+
+            if (includeMetadata) {
+                response.metadata = {
+                    fromCache: false
+                };
+            }
+
             return response;
         }
+    }
+}
+
+export class ImagesGetResponse {
+    public rover: String | null;
+    public camera: String | null;
+    public photos: Array<Image>;
+    public metadata: any;
+
+    constructor() {
+        this.rover = null;
+        this.camera = null;
+        this.photos = [];
     }
 }
 
