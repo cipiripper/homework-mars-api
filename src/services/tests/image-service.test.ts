@@ -1,6 +1,6 @@
 import ImageService from "../image-service";
 
-describe("Image Service", () => {
+describe("ImageService", () => {
     it("Should throw error on bad param", () => {
         ImageService.getImages("curiosity", "camera", 2);
         expect(true).toEqual(true);

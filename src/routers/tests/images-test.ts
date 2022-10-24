@@ -9,7 +9,7 @@ beforeAll(async () => {
     await server.start();
 });
 
-describe("Images API", () => {
+describe("GET /api/images", () => {
     it('Should return valid image list for valid params', async () => {
         const req = request(server.getApp());
         const res = await req.get(`/api/images/curiosity/FHAZ/0`)
@@ -37,6 +37,28 @@ describe("Images API", () => {
             .expect(404);
 
         expect(res.body.message).toContain(Object.keys(CAMERA_NAMES).join(", "));
+    });
+
+    it('Should return bad request for negative sol', async () => {
+        const req = request(server.getApp());
+        const res = await req.get(`/api/images/curiosity/FHAZ/-55`)
+            .expect('Content-Type', /json/)
+            .expect(404);
+    });
+
+    it('Should return bad request for bad sol', async () => {
+        const req = request(server.getApp());
+        const res = await req.get(`/api/images/curiosity/FHAZ/5.5`)
+            .expect('Content-Type', /json/)
+            .expect(404);
+    });
+
+
+    it('Should return bad request for string sol', async () => {
+        const req = request(server.getApp());
+        const res = await req.get(`/api/images/curiosity/FHAZ/SOL_SOL`)
+            .expect('Content-Type', /json/)
+            .expect(404);
     });
 });
 

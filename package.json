@@ -11,7 +11,7 @@
 		"startDev": "npx ts-node --transpile-only ./src",
 		"startProd": "npm run build; node ./build",
 		"start": "npm run startProd",
-		"test": "ENV_FILE=./environment/test.env jest"
+		"test": "ENV_FILE=./environment/test.env jest --verbose"
 	},
 	"author": "Marko Matic",
 	"license": "GNU GPL V3",

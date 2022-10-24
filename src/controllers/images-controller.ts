@@ -1,7 +1,5 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import BadRequest from "../models/errors/bad-request";
-import HttpError from "../models/errors/http-error";
-import Image from "../models/image";
 import ImageService from "../services/image-service";
 import Controller from "./controller";
 
@@ -32,7 +30,7 @@ export default class Images extends Controller {
         Controller.checkValueContainedIn(rover, "rover", ROVER_NAMES);
         Controller.checkValueContainedIn(camera, "camera", CAMERA_NAMES);
 
-        if (sol < 0) {
+        if (isNaN(sol) || !Number.isInteger(sol) || sol < 0) {
             throw new BadRequest('Sol has to be a positive integer.');
         }
 
