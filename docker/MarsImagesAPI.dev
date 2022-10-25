@@ -1,0 +1,6 @@
+FROM node:16.0.0
+WORKDIR /usr/app
+COPY . .
+RUN npm install
+
+CMD ["npm", "run", "startDev"]

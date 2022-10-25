@@ -11,7 +11,7 @@ export default class ApiServer {
     private server: http.Server | null;
 
     constructor(port?: number) {
-        this.port = port ?? Number(process.env.PORT ?? 0);
+        this.port = port ?? Number(process.env.PORT ?? 3000);
         this.mountPoint = process.env.MOUNT_POINT ?? "/api";
         this.app = Express();
         this.server = null;

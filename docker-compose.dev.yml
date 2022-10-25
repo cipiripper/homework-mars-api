@@ -1,0 +1,32 @@
+version: "3.9"
+services:
+  mars_images_api:
+    container_name: mars_images_api
+    build:
+      context: .
+      dockerfile: ./docker/MarsImagesAPI.dev
+    env_file:
+      - ./environment/dev.env
+    volumes:
+      - .:/usr/app
+      - /usr/app/node_modules
+    ports:
+      - "3000:3000"
+    networks:
+      - main
+  redis:
+    container_name: redis
+    build:
+      dockerfile: ./docker/Redis
+      context: .
+    restart: on-failure
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./db/redis:/data
+    networks:
+      - main
+networks:
+  main:
+    driver: bridge
+    name: development_network

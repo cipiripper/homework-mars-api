@@ -1,0 +1,35 @@
+version: "3.9"
+services:
+  mars_images_api:
+    container_name: mars_images_api
+    build:
+      context: .
+      dockerfile: ./docker/MarsImagesAPI.prod
+    env_file:
+      - ./environment/prod.env
+    restart: on-failure
+    networks:
+      - backend
+  nginx:
+    container_name: nginx
+    image: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./docker/config/nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - backend
+  redis:
+    container_name: redis
+    build:
+      dockerfile: ./docker/Redis
+      context: .
+    restart: on-failure
+    volumes:
+      - ./db/redis:/data
+    networks:
+      - backend
+networks:
+  backend:
+    driver: bridge
+    name: prod_backend

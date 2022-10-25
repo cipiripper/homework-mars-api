@@ -1,5 +1,7 @@
 # homework-mars-api
 
+
+
 #ENV Variables
 CACHE - set to `off` to disable caching, set to `memory` for development, set to `redis` to cache in redis
 REDIS_HOST - hostname of the redis service
