@@ -85,7 +85,17 @@ This will start redis and two App containers, with port 80 now forwarded using N
 
 *Difference between the two docker builds is that the production build doesn't have any TypeScript sources, it has NGINX as a load balancer, it forwards the port 80, instead of the API port 3000 and it runs two App containers.*
 
-## 5. Environment Variables
+## 5. Calling the API
+There is only one endpoint supported:
+```
+/images/:rover/:camera/:sol
+```
+
+- **rover** - the name of rover, availale rovers: `CURIOSITY, OPPORTUNITY, SPIRIT`
+- **camera** - the name of the camera, available cameras: `FHAZ, RHAZ, MAST, CHEMCAM, MAHLI, MARDI, NAVCAM, PANCAM, MINITES`
+- **sol** - day from the rover's touchdown for which you want to see the images for, has to be a positive integer
+
+## 6. Environment Variables
 - **NODE_ENV** - `production` or `development`, standard node.js env variable
 - **CACHE** - to disable caching, set to `"off"`
 - **NASA_API_KEY** - your NASA API key
@@ -95,7 +105,8 @@ This will start redis and two App containers, with port 80 now forwarded using N
 - **REDIS_HOST** - redis host/IP, by default its `redis`, but you can specify any Redis instance address if you want
 - **REDIS_PORT** - redis port, `6379` by default
 
-## 6. Contributing
+
+## 7. Contributing
 1. Create a fix or a feature locally
 2. Create tests for your new code
 3. Be sure that `npm test` doesn't fail
