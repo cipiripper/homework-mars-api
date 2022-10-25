@@ -21,15 +21,25 @@ class CacheService {
                 },
             });
 
-            await this.client.connect();
-            console.log(`[CACHE] Connected to Redis on ${process.env.REDIS_HOST}:${process.env.REDIS_PORT ?? 6379}`);
+            try {
+                await this.client.connect();
+                console.log(`[CACHE] Connected to Redis on ${process.env.REDIS_HOST}:${process.env.REDIS_PORT ?? 6379}`);
+                return;
+            } catch {
+                console.warn(`[CACHE] Failed to connect to Redis on ${process.env.REDIS_HOST}:${process.env.REDIS_PORT ?? 6379}, falling back to LRU cache...`);
+                this.connectLRU();
+            }
         } else {
-            console.log("[CACHE] Using LRU in-memory cache instead of Redis, please configure REDIS_HOST and REDIS_PORT env variables for distributed caching.");
-            this.client = new LRUCache<String, String>({
-                ttl: 60000,
-                max: 100000
-            });
+            this.connectLRU();
         }
+    }
+
+    private connectLRU() {
+        console.log("[CACHE] Using LRU in-memory cache instead of Redis, please configure REDIS_HOST and REDIS_PORT env variables for distributed caching.");
+        this.client = new LRUCache<String, String>({
+            ttl: 60000,
+            max: 100000
+        });
     }
 
     public stopCache() {
