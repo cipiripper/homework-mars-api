@@ -1,7 +1,17 @@
 version: "3.9"
 services:
-  mars_images_api:
-    container_name: mars_images_api
+  mars_images_api_1:
+    container_name: mars_images_api_1
+    build:
+      context: .
+      dockerfile: ./docker/MarsImagesAPI.prod
+    env_file:
+      - ./environment/prod.env
+    restart: on-failure
+    networks:
+      - backend
+  mars_images_api_2:
+    container_name: mars_images_api_2
     build:
       context: .
       dockerfile: ./docker/MarsImagesAPI.prod

@@ -8,7 +8,7 @@ function handleError(error: Error) {
     if (error instanceof HttpError) {
         return error;
     } else {
-        console.error("ERROR: ", error);
+        console.error("ERROR: ", error.stack);
         return new InternalServerError(error.message);
     }
 }

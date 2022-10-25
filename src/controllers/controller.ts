@@ -4,7 +4,7 @@ import InternalServerError from "../models/errors/internal-server-error";
 
 export default abstract class Controller {
     static handleError(error: Error) {
-        console.error(`[${this.name}] ERROR: `, error);
+        console.error(`[${this.name}] ERROR: `, error.stack);
 
         if (error instanceof HttpError) {
             return error;
