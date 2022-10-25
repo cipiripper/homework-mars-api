@@ -15,7 +15,7 @@ cd /tmp/mars_api
 git clone https://github.com/cipiripper/homework-mars-api.git .
 npm install
 ```
-## 2. Test The code
+## 2. Test the code
 To run tests:
 ```sh
 npm test

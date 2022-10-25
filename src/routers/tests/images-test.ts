@@ -1,6 +1,6 @@
 import request from 'supertest'
 import ApiServer from "../../api-server";
-import { CAMERA_NAMES, ROVER_NAMES } from "../../controllers/images-controller";
+import { CAMERA_NAMES, ROVER_NAMES } from "../../services/nasa-api-service";
 
 let server: ApiServer;
 

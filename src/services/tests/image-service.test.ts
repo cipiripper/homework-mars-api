@@ -1,9 +1,10 @@
 import ImageService from "../image-service";
 
 describe("ImageService", () => {
-    it("Should throw error on bad param", () => {
-        ImageService.getImages("curiosity", "camera", 2);
-        expect(true).toEqual(true);
+    it("Should not throw error on bad param", async () => {
+        const response = await ImageService.getImages("curiosity", "camera", 2);
+        expect(response.camera).toBeUndefined();
+
     });
 
     it("Should cache data", async () => {

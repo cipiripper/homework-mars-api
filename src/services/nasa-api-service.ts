@@ -1,6 +1,23 @@
-import Image from "../models/image";
 import Axios from "axios";
 import ServiceUnavailable from "../models/errors/service-unavailable";
+
+export const ROVER_NAMES = {
+    "CURIOSITY": "Curiosity",
+    "OPPORTUNITY": "Opportunity",
+    "SPIRIT": "Spirit"
+};
+
+export const CAMERA_NAMES = {
+    "FHAZ": "Front Hazard Avoidance Camera",
+    "RHAZ": "Rear Hazard Avoidance Camera",
+    "MAST": "Mast Camera",
+    "CHEMCAM": "Chemistry and Camera Complex",
+    "MAHLI": "Mars Hand Lens Imager",
+    "MARDI": "Mars Descent Imager",
+    "NAVCAM": "Navigation Camera",
+    "PANCAM": "Panoramic Camera",
+    "MINITES": "Miniature Thermal Emission Spectrometer (Mini-TES)"
+};
 
 class NasaAPIService {
     private key: string;
@@ -8,7 +25,7 @@ class NasaAPIService {
 
     constructor() {
         this.key = process.env.NASA_API_KEY || "DEMO_KEY";
-        this.apiRateLimit = Number(process.env.NASA_API_LIMIT) ||0;
+        this.apiRateLimit = Number(process.env.NASA_API_LIMIT) || 0;
     }
 
     public async getMarsRoverPhotos(rover: string, camera: string, sol: number): Promise<MarsRoverPhoto[]> {

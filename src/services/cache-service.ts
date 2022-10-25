@@ -57,8 +57,12 @@ class CacheService {
 
     public async setObject(key: string, object: any) {
         if (this.cache) {
-            const cached = await (this.client["set"] as Function)(key, JSON.stringify(object));
-            return cached;
+            try {
+                const cached = await (this.client["set"] as Function)(key, JSON.stringify(object));
+                return cached;
+            } catch (error) {
+                console.warn(`[CACHE] Error while caching object ${key}:`, error);
+            }
         }
     }
 }
